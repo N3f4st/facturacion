@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BillingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="impuesto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="nombreCorto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="valor" Type="float" />
+          <Property Name="porcentaje" Type="bit" />
+          <Property Name="activo" Type="bit" />
+        </EntityType>
+        <EntityType Name="categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="nombreCorto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="activo" Type="bit" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'huelebilling.producto.producto' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="codProducto" />
+            <PropertyRef Name="idImpuesto" />
+          </Key>
+          <Property Name="codProducto" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="descripcion" Type="nvarchar" MaxLength="500" />
+          <Property Name="almacenMinimo" Type="float" />
+          <Property Name="reorden" Type="float" />
+          <Property Name="activo" Type="bit" />
+          <Property Name="codigoRapido" Type="nvarchar" MaxLength="30" />
+          <Property Name="codigoBarra" Type="nvarchar" MaxLength="50" />
+          <Property Name="notas" Type="nvarchar" MaxLength="1500" />
+          <Property Name="rutaImagen" Type="nvarchar" MaxLength="150" />
+          <Property Name="idImpuesto" Type="int" Nullable="false" />
+          <Property Name="idCategoria" Type="int" />
+          <Property Name="idTipoProducto" Type="int" />
+        </EntityType>
+        <EntityType Name="tipoProducto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="nombreCorto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="activo" Type="bit" />
+        </EntityType>
+        <EntityType Name="unidadMedida">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="nombreCorto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="activo" Type="bit" />
+        </EntityType>
+        <EntityType Name="unidadMedidaEquivalencia">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="nombreCorto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="idProducto" Type="int" />
+          <Property Name="idUnidadMedida" Type="int" />
+          <Property Name="unidadesEquivalencia" Type="float" />
+          <Property Name="activo" Type="bit" />
+        </EntityType>
+        <EntityContainer Name="BillingModelStoreContainer">
+          <EntitySet Name="impuesto" EntityType="Self.impuesto" Schema="facturacion" store:Type="Tables" />
+          <EntitySet Name="categoria" EntityType="Self.categoria" Schema="producto" store:Type="Tables" />
+          <EntitySet Name="tipoProducto" EntityType="Self.tipoProducto" Schema="producto" store:Type="Tables" />
+          <EntitySet Name="unidadMedida" EntityType="Self.unidadMedida" Schema="producto" store:Type="Tables" />
+          <EntitySet Name="unidadMedidaEquivalencia" EntityType="Self.unidadMedidaEquivalencia" Schema="producto" store:Type="Tables" />
+          <EntitySet Name="producto" EntityType="Self.producto" store:Type="Tables" store:Schema="producto">
+            <DefiningQuery>SELECT 
+    [producto].[codProducto] AS [codProducto], 
+    [producto].[descripcion] AS [descripcion], 
+    [producto].[almacenMinimo] AS [almacenMinimo], 
+    [producto].[reorden] AS [reorden], 
+    [producto].[activo] AS [activo], 
+    [producto].[codigoRapido] AS [codigoRapido], 
+    [producto].[codigoBarra] AS [codigoBarra], 
+    [producto].[notas] AS [notas], 
+    [producto].[rutaImagen] AS [rutaImagen], 
+    [producto].[idImpuesto] AS [idImpuesto], 
+    [producto].[idCategoria] AS [idCategoria], 
+    [producto].[idTipoProducto] AS [idTipoProducto]
+    FROM [producto].[producto] AS [producto]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BillingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="impuesto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombreCorto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="valor" Type="Double" />
+          <Property Name="porcentaje" Type="Boolean" />
+          <Property Name="activo" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombreCorto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="activo" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tipoProducto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombreCorto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="activo" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="unidadMedida">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombreCorto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="activo" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="unidadMedidaEquivalencia">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombreCorto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idProducto" Type="Int32" />
+          <Property Name="idUnidadMedida" Type="Int32" />
+          <Property Name="unidadesEquivalencia" Type="Double" />
+          <Property Name="activo" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="codProducto" />
+            <PropertyRef Name="idImpuesto" />
+          </Key>
+          <Property Name="codProducto" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="almacenMinimo" Type="Double" />
+          <Property Name="reorden" Type="Double" />
+          <Property Name="activo" Type="Boolean" />
+          <Property Name="codigoRapido" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="codigoBarra" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="notas" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
+          <Property Name="rutaImagen" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="idImpuesto" Type="Int32" Nullable="false" />
+          <Property Name="idCategoria" Type="Int32" />
+          <Property Name="idTipoProducto" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="BillingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="impuesto" EntityType="Self.impuesto" />
+          <EntitySet Name="categoria" EntityType="Self.categoria" />
+          <EntitySet Name="tipoProducto" EntityType="Self.tipoProducto" />
+          <EntitySet Name="unidadMedida" EntityType="Self.unidadMedida" />
+          <EntitySet Name="unidadMedidaEquivalencia" EntityType="Self.unidadMedidaEquivalencia" />
+          <EntitySet Name="producto" EntityType="Self.producto" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BillingModelStoreContainer" CdmEntityContainer="BillingEntities">
+          <EntitySetMapping Name="impuesto">
+            <EntityTypeMapping TypeName="BillingModel.impuesto">
+              <MappingFragment StoreEntitySet="impuesto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="nombreCorto" ColumnName="nombreCorto" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="categoria">
+            <EntityTypeMapping TypeName="BillingModel.categoria">
+              <MappingFragment StoreEntitySet="categoria">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="nombreCorto" ColumnName="nombreCorto" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoProducto">
+            <EntityTypeMapping TypeName="BillingModel.tipoProducto">
+              <MappingFragment StoreEntitySet="tipoProducto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="nombreCorto" ColumnName="nombreCorto" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="unidadMedida">
+            <EntityTypeMapping TypeName="BillingModel.unidadMedida">
+              <MappingFragment StoreEntitySet="unidadMedida">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="nombreCorto" ColumnName="nombreCorto" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="unidadMedidaEquivalencia">
+            <EntityTypeMapping TypeName="BillingModel.unidadMedidaEquivalencia">
+              <MappingFragment StoreEntitySet="unidadMedidaEquivalencia">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="nombreCorto" ColumnName="nombreCorto" />
+                <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+                <ScalarProperty Name="idUnidadMedida" ColumnName="idUnidadMedida" />
+                <ScalarProperty Name="unidadesEquivalencia" ColumnName="unidadesEquivalencia" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="producto">
+            <EntityTypeMapping TypeName="BillingModel.producto">
+              <MappingFragment StoreEntitySet="producto">
+                <ScalarProperty Name="codProducto" ColumnName="codProducto" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="almacenMinimo" ColumnName="almacenMinimo" />
+                <ScalarProperty Name="reorden" ColumnName="reorden" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="codigoRapido" ColumnName="codigoRapido" />
+                <ScalarProperty Name="codigoBarra" ColumnName="codigoBarra" />
+                <ScalarProperty Name="notas" ColumnName="notas" />
+                <ScalarProperty Name="rutaImagen" ColumnName="rutaImagen" />
+                <ScalarProperty Name="idImpuesto" ColumnName="idImpuesto" />
+                <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
+                <ScalarProperty Name="idTipoProducto" ColumnName="idTipoProducto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
